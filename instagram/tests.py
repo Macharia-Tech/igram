@@ -15,7 +15,7 @@ class ProfileTestClass(TestCase):
 
 class CommentTestClass(TestCase):
     def setUp(self):
-        self.comment = Comment(comment = 'i am a comment',posted_by = 'dan',posted_on = '12/23/2017',image_id='1')
+        self.comment = Comment(comment = 'i am a comment',posted_by = 'audrey',posted_on = '12/23/2017',image_id='1')
         self.comment.save()
 
     def test_instance(self):
@@ -30,7 +30,7 @@ class CommentTestClass(TestCase):
         self.assertTrue(len(comments)==1)
 class ImagesTestClass(TestCase):
     def setUp(self):
-        self.image = Images(name='image',caption="happy now",image = 's.jpg',post_date = "4/12/2019",liked = 'dan',posted_by = 'dan')
+        self.image = Images(name='image',caption="happy now",image = 's.jpg',post_date = "4/12/2019",liked = 'audrey',posted_by = 'dan')
         self.image.save()
 
     def test_instance(self):
