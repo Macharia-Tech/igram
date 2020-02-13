@@ -1,4 +1,4 @@
-![pic](./static/infront.png)
+![pic](../static/infront.png)
 
 
 
