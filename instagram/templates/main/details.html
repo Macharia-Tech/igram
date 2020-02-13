@@ -25,6 +25,8 @@
       <img src="{{image_details.image_path.url}}" class="" alt="" style="width:100%">
 
 
+       <!--div class="row"-->
+         <!--div class="col-sm-6"-->
         <div class="center">
         <h4><a href="{%url 'Comment' image_details.id %}"style="color:orange;"><i class="fa fa-comments-o" style="font-size:40px; color:orange;"></i>Add comment</a></h4>
         <!--/div-->
@@ -39,8 +41,6 @@
             {%else %}
             <!--button type="submit" name="image_details_id"value="{{image_details.id}}" class="btn btn-primary"--><a href="{%url 'like_post' image_details.id%}" style="color:black;"><i class="fa fa-heart-o" style="font-size:36px;"></i></a><!--/button-->
            {% endif %}
-
-
 
       <!--/div-->
     </div>
