@@ -106,12 +106,22 @@ def details(request,image_id):
     return render(request,'main/details.html',{"image_details":image_details,"comment_details":comment_details,"images":images,"is_liked":is_liked,"total_likes":images.total_likes(),"image_profile":image_profile})
 
 def search_profile(request):
-    if request.method =='POST':
-        search_term=request.POST.get("profile")
-        searched_profiles=Profile.objects.filter(user__icontains=search_term)
-        return render (request,'main/search.html',{"searched_profiles":searched_profiles})
-
-    return render (request,'main/search.html')
+    if request.method == "GET":
+        search_term = request.GET.get('search')
+        message = '{}'.format(search_term)
+        # searched_user = User.objects.filter(username=search_term).all()
+        try:
+            searched_user = User.objects.filter(username=search_term)
+            searched_posts = Image.objects.filter(user=searched_user)[::-1]
+        except DoesNotExist:
+            raise Http404()
+            return HttpResponseRedirect('Home')
+    context={
+        'user':searched_user,
+        'message':message,
+        'posts':searched_posts
+    }
+    return render(request, 'searchh.html',context)
 def nav(request,profile_id):
     title='hello'
     profile_info=Profile.objects.get(id=profile_id)
