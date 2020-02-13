@@ -1,5 +1,3 @@
-![pic](../static/infront.png)
-
 
 
 ## Instagram
