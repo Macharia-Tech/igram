@@ -18,6 +18,7 @@ class CommentTestClass(TestCase):
         self.comment = Comment(comment = 'i am a comment',posted_by = 'audrey',posted_on = '12/23/2017',image_id='1')
         self.comment.save()
 
+
     def test_instance(self):
         self.assertTrue(isinstance(self.comment,Comment))
     def test_get_all_comments(self):
