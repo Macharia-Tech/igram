@@ -1,3 +1,7 @@
+![pic](./static/infront.png)
+
+
+
 ## Instagram
 An application build using Django a python framework.This application allows one to signup, sign in in the application to like,comment and and view the images posted by the user.
 
