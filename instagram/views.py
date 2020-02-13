@@ -1,8 +1,12 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from .forms import ProfileForm,ImageForm,SignUpForm,UserForm,CommentForm
+from .models import Profile,Image,Comment
+from django.http import Http404,HttpResponseRedirect
+from django.contrib.auth.forms import UserCreationForm
+from django.db import transaction
 from django.contrib.auth import login,authenticate
-
+from django.contrib.auth.models import User
 # Create your views here.
 def signup(request):
     if request.method == 'POST':
@@ -24,10 +28,9 @@ def signup(request):
     else:
         form=SignUpForm()
     return render (request,'signup.html',{'form':form})
-
 @login_required(login_url='/accounts/login')
 def home(request):
-    title='Welcome to Instaphoto'
+    title='Welcome to Instapic'
     current_user=request.user
     profile_info=Profile.objects.all()
     profile=Profile.objects.get(user=current_user)
@@ -36,13 +39,12 @@ def home(request):
 
     return render(request,'main/home.html',{"title":title,"profile_info":profile_info,"images":images})
 
-@login_required(login_url='/accounts/login')
+@login_required(login_url='/accounts/login')  
 def index(request):
     title='Welcome to instagram'
 
 
     return render(request,'main/index.html',{"title":title})
-
 @login_required
 def first_profile(request,profile_id):
     current_id=request.user.id
@@ -73,7 +75,7 @@ def add_image(request):
                 image=form.save(commit=False)
                 image.profile=profile_instance
                 image.save()
-                return redirect(first_profile,request.user.id)
+                return redirect("Home")
 
         else:
             form=ImageForm()
@@ -97,16 +99,19 @@ def details(request,image_id):
     except DoesNotExsist:
         raise Http404()
 
-    images_profile=Image.objects.filter(id=image_id)
+    image_profile=Image.objects.filter(id=image_id)
 
     comment_details=Comment.objects.filter(image=current_image)
 
-    return render(request,'main/details.html',{"image_details":image_details,"comment_details":comment_details,"images":images,"is_liked":is_liked,"total_likes":images.total_likes(),"images_profile":images_profile})
+    return render(request,'main/details.html',{"image_details":image_details,"comment_details":comment_details,"images":images,"is_liked":is_liked,"total_likes":images.total_likes(),"image_profile":image_profile})
 
 def search_profile(request):
-    search_term=request.GET.get("profile")
-    searched_profiles=Profile.search(search_term)
-    return render (request,'main/search.html',{"searched_profiles":searched_profiles})
+    if request.method =='POST':
+        search_term=request.POST.get("profile")
+        searched_profiles=Profile.objects.filter(user__icontains=search_term)
+        return render (request,'main/search.html',{"searched_profiles":searched_profiles})
+
+    return render (request,'main/search.html')
 def nav(request,profile_id):
     title='hello'
     profile_info=Profile.objects.get(id=profile_id)
@@ -165,3 +170,28 @@ def follow(request,user_id):
     print(follows.user.who_following.all())
 
     return redirect(first_profile ,user1.id)
+@login_required(login_url='login')
+def profile(request):
+    current_user = request.user
+    profile = Profile.objects.all()
+
+    if request.method == 'POST':
+        u_form = UpdateUserForm(request.POST,instance=request.user)
+        p_form = UpdateUserProfileForm(request.POST, request.FILES,instance=request.user.profile)
+
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            
+            return render(request,'registration/profile.html')
+    else:
+        u_form = UpdateUserForm(instance=request.user)
+        p_form = UpdateUserProfileForm(instance=request.user.profile)
+
+
+    context = {
+        'u_form':u_form,
+        'p_form':p_form
+    }
+
+    return render(request, 'registration/profile.html',locals())

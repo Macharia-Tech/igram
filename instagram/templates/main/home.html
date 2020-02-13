@@ -1,4 +1,4 @@
-{%extends 'main/baseprofile.html'%}
+{% extends "main/baseprofile.html"%}
 {% load bootstrap4 %}
 {% load static %}
 
@@ -11,38 +11,28 @@
 
 {% block content %}
 
+
+
 <div class="container">
+  <div class="row">
+{% if images %}
+{%for image in images%}
+<div class="card" style="width: 22rem;">
+  <a href="{%url 'Details' image.id%}" class=""><img src="{{image.image_path.url}}" class="img-responsive"
+    alt="Image" style="width: 100%;"></a>
+  
+  </div>
 
 
-  <div class="row row-flex">
-  {%for image in images%}
 
-
-  <div class="col-md-4 col-sm-6 col-x6-12">
-    <div class="card">
-
-<a href="{%url 'Details' image.id%}" class=""><img src="{{image.image_path.url}}" class="img-responsive"alt="Image"></a>
-
-</div>
-</div>
 {% endfor %}
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
+{% endif %}
+  </div>
+  </div>
 {% endblock %}
+
 {% block scripts %}
-
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-       {% bootstrap_javascript %}
-           <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"></script>
-
-      {% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% bootstrap_javascript %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"></script>
+{% endblock %}

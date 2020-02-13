@@ -1,4 +1,5 @@
 {%extends 'main/base.html'%}
+{% load crispy_forms_tags %}
 {% load bootstrap4 %}
 {% load static %}
 {% block styles %}
@@ -40,6 +41,28 @@
       <ul class="pager">
       <li class="previous"><a href="#"><p class="text-center" style="color:orange;width:280px;">Edit Profile</p></a></li>
     </ul>
+    <div class="modal-header" style="align:center;">
+      <h5 class="modal-title" id="exampleModalLabel">Update User Info</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            {{ u_form|crispy }}
+            {{ p_form|crispy }}
+        </fieldset>
+        <div class="modal-footer">
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Update Info</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </form>
+</div>
+
   </nav>
 
   </div>
